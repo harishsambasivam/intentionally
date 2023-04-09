@@ -10,7 +10,7 @@ function CustomInput({ label, className, placeHolder, ...props }: any) {
       </label>
       <Field
         {...props}
-        className={`appearance-none  rounded w-full py-2 text-primary-600 leading-tight focus:outline-none focus:shadow-outline ${
+        className={`appearance-none rounded w-full py-2 text-primary-600 leading-tight focus:outline-none focus:shadow-outline ${
           props.errors && props.touched ? "border-red-500" : ""
         }`}
         placeholder={placeHolder}
@@ -29,7 +29,7 @@ const TextArea = function ({ label, className, placeHolder, ...props }: any) {
       <Field
         {...props}
         as="textarea"
-        className={`appearance-none h-full rounded w-full py-2 text-primary-600 leading-tight focus:outline-none focus:shadow-outline ${
+        className={`appearance-none rounded w-full py-2 text-primary-600 leading-tight focus:outline-none focus:shadow-outline ${
           props.errors && props.touched ? "border-red-500" : ""
         }`}
         placeholder={placeHolder}
@@ -44,6 +44,10 @@ const Intention = () => {
 
   const handleFocus = () => {
     setIsKeyboardShownOnMobile(true);
+  };
+
+  const handleBlur = () => {
+    setIsKeyboardShownOnMobile(false);
   };
 
   return (
@@ -61,16 +65,19 @@ const Intention = () => {
             errors={errors.title}
             touched={touched.title}
             onFocus={handleFocus}
+            onBlur={handleBlur}
             placeHolder="Add a title to this entry"
           />
           <TextArea
             label="Story"
             name="story"
             type="textarea"
-            className="h-full mb-6"
+            className="mb-6 "
             errors={errors.story}
             touched={touched.story}
             placeHolder="Write something..."
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onChange={(event: any) => {
               setFieldValue("story", event.target.value);
               event.target.style.height = "auto";

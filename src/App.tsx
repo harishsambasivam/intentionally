@@ -13,9 +13,19 @@ import {
 } from "./context/MobileKeyboardContext";
 import { useState } from "react";
 
-const AppContainer = tw.div`flex flex-col h-screen`;
+interface AppContainerProps {
+  $isKeyboardShown: boolean;
+}
 
-const MainContainer = tw.div`px-8 py-2 overflow-auto scrollbar-hide h-full`;
+// fit the content when keyboard is enabled in mobile devices
+const AppContainer = tw.div<AppContainerProps>`
+${(p) => (p.$isKeyboardShown ? "h-fit" : "h-screen")}
+flex flex-col absolute inset-0`;
+
+// fit the content when keyboard is enabled in mobile devices
+const MainContainer = tw.div<AppContainerProps>`
+${(p) => (p.$isKeyboardShown ? "h-fit" : "h-full")}
+px-8 overflow-auto scrollbar-hide`;
 
 function App() {
   const [isKeyboardShown, setIsKeyboardShown] = useState<boolean>(false);
@@ -29,9 +39,9 @@ function App() {
     <MobileKeyboardContext.Provider
       value={{ isKeyboardShown, setIsKeyboardShownOnMobile }}
     >
-      <AppContainer>
+      <AppContainer $isKeyboardShown={isKeyboardShown}>
         <TopBar />
-        <MainContainer>
+        <MainContainer $isKeyboardShown={isKeyboardShown}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/calendar" element={<Calendar />} />
